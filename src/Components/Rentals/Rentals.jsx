@@ -2,9 +2,20 @@
 
 
 
+import axios from "axios";
+import { useEffect, useState } from "react";
 import "./Rentals.css";
 
 export const Rentals = () => {
+  const [showTable, setShowTable] = useState([]);
+  useEffect(()=>{
+     getData()
+  },[])
+  const getData=()=>{
+    axios.get("http://localhost:8080/houses").then(res=>{
+      setShowTable(res.data)
+    })
+  }
   return (
     <div className="rentalContainer">
       <div className="sortingButtons">
@@ -33,7 +44,7 @@ export const Rentals = () => {
           </tr>
         </thead>
         <tbody>
-          {[].map((house, index) => {
+          {showTable.map((house, index) => {
             return (
               <tr key={house.id} className="houseDetails">
                 <td className="houseId">{house.id}</td>
