@@ -8,10 +8,11 @@ import "./Rentals.css";
 
 export const Rentals = () => {
   const [showTable, setShowTable] = useState([]);
+  // const [a, setA] = useState([]);
   useEffect(()=>{
      getData()
   },[])
-  const getData=()=>{
+  const getData=(value)=>{
     axios.get("http://localhost:8080/houses").then(res=>{
       setShowTable(res.data)
     })
@@ -19,11 +20,31 @@ export const Rentals = () => {
   return (
     <div className="rentalContainer">
       <div className="sortingButtons">
-        <button className="sortById">Sort by ID</button>
-        <button className="sortByRentAsc">Rent Low to high</button>
-        <button className="sortByRentDesc">Rent High to low</button>
-        <button className="sortByAreaAsc">Area Low to high</button>
-        <button className="sortByAreaDesc">Area High to Low</button>
+        <button  onClick={(()=>{
+        return (setShowTable([...showTable.sort((a,b)=>a.id-b.id)]))
+      })} className="sortById">Sort by ID</button>
+        <button 
+            onClick={(()=>{
+              return (setShowTable([...showTable.sort((a,b)=>a.rent-b.rent)]))
+            })}
+        className="sortByRentAsc">Rent Low to high</button>
+        <button
+            onClick={(()=>{
+              return (setShowTable([...showTable.sort((a,b)=>b.rent-a.rent)]))
+            })}
+        className="sortByRentDesc">Rent High to low</button>
+        <button  
+        
+        
+        onClick={(()=>{
+          return (setShowTable([...showTable.sort((a,b)=>a.areaCode-b.areaCode)]))
+        })}
+        className="sortByAreaAsc">Area Low to high</button>
+        <button 
+          onClick={(()=>{
+            return (setShowTable([...showTable.sort((a,b)=>b.areaCode-a.areaCode)]))
+          })}
+        className="sortByAreaDesc">Area High to Low</button>
       </div>
       <input
         className="searchAddress"
@@ -54,7 +75,7 @@ export const Rentals = () => {
                 <td className="areaCode">{house.areaCode}</td>
                 <td className="rent">{house.rent}</td>
                 <td className="preferredTenants">
-                  {/* Show text Both or Bachelors or Married based on values */}
+                  {house.preferredTenant}
                 </td>
                 <td className="houseImage">
                   <img src={house.image} alt="house" />
